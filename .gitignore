@@ -20,3 +20,6 @@ build/
 # Anki exports
 *.apkg
 *.colpkg
+
+# Skill distribution
+anki.zip

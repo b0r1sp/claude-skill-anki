@@ -1,6 +1,35 @@
 # Claude Skill: Anki Card Creator
 
-A Claude Skill for creating high-quality Anki flashcards from study materials and importing them via the [AnkiConnect](https://foosoft.net/projects/anki-connect/) REST API.
+A Claude Skill for creating high-quality Anki flashcards from study materials and importing them via the [AnkiConnect](https://ankiweb.net/shared/info/2055492159) REST API.
+
+## Installation
+
+### Claude Desktop
+
+1. Download `anki.zip` from the [latest release](../../releases/latest)
+2. Open Claude Desktop → **Preferences → Skills → Upload Skill**
+3. Select `anki.zip` — done
+
+### Claude Code (CLI)
+
+```bash
+git clone https://github.com/b0r1sp/claude-skill-anki.git
+mkdir -p ~/.claude/skills
+```
+
+Then either **copy** (simple, self-contained):
+```bash
+cp -r claude-skill-anki ~/.claude/skills/anki
+```
+
+Or **symlink**:
+```bash
+ln -s "$PWD/claude-skill-anki" ~/.claude/skills/anki
+```
+
+If `~/.claude/skills/` didn't exist before, restart Claude Code once so it picks up the new directory: type `exit` or press `Ctrl+D`, then run `claude` again. After that, the skill auto-loads in every session.
+
+---
 
 ## What it does
 
