@@ -106,3 +106,7 @@ The import script creates two custom note types if they don't exist:
 
 - **DL-Basic** — Fields: Front, Back, Ref. Clean card template with reference line.
 - **DL-Cloze** — Fields: Text, Ref. Cloze deletion template with reference line.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
