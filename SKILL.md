@@ -7,6 +7,7 @@ description: |
   the user mentions Anki, spaced repetition, or exam preparation with flashcards.
   Triggers: anki, flashcards, Lernkarten, Karteikarten, spaced repetition,
   "Karten erstellen", "cards from PDF", exam prep cards.
+license: MIT — see [LICENSE](LICENSE).
 ---
 
 # Anki Card Creation Skill
@@ -106,7 +107,3 @@ The import script creates two custom note types if they don't exist:
 
 - **DL-Basic** — Fields: Front, Back, Ref. Clean card template with reference line.
 - **DL-Cloze** — Fields: Text, Ref. Cloze deletion template with reference line.
-
-## License
-
-MIT — see [LICENSE](LICENSE).
