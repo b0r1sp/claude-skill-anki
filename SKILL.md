@@ -7,7 +7,7 @@ description: |
   the user mentions Anki, spaced repetition, or exam preparation with flashcards.
   Triggers: anki, flashcards, Lernkarten, Karteikarten, spaced repetition,
   "Karten erstellen", "cards from PDF", exam prep cards.
-license: MIT — see [LICENSE](LICENSE).
+license: MIT
 ---
 
 # Anki Card Creation Skill
