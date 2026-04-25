@@ -28,6 +28,16 @@
 
 10. **Mnemonics for lists/sets** — Build coordinated mnemonic words for list knowledge. See the Mnemonic System section below.
 
+11. **No comma-separated sentences** — Never write answers as comma-separated lists. Decompose them into individual atomic items using `<br>` or bullet points in the Back field.
+
+12. **Spell out abbreviations** — Always expand abbreviations inline in brackets the first time they appear on a card, e.g. `TCP (Transmission Control Protocol)`. Look up the meaning in the provided source documents. If not found, ask the user before creating the card.
+
+13. **Tags** — Every card must carry the following structured tags:
+    - `subject:X::chapterXX` — subject area and chapter
+    - `type:[Basic|Cloze|ImageOcclusion]` — card type
+    - `source:[Filename.ext]` — source file name including extension
+    - `origin:[Filename > Chapter > Slide N]` — exact slide reference
+
 ## Mnemonic System
 
 For any list or set of items that must be memorized, create a fantasy mnemonic word. The word consists of two parts:
@@ -37,21 +47,23 @@ For any list or set of items that must be memorized, create a fantasy mnemonic w
 
 ### Rules for mnemonic construction
 - Use syllables that clearly reference each list item
-- Weave syllables into an organic fantasy word that feels natural to speak
+- **First, try to form a meaningful or funny real word** from the syllables — a word that exists in any language and is easy to remember or amusing. Only fall back to a fantasy word if no satisfying real word can be found.
+- Weave syllables into an organic word that feels natural to speak
 - Use HTML color spans to highlight each syllable in the Back field
+- **Keep the source language** — syllables must come from the original language of the material. Do not translate terms into another language to form the mnemonic.
 
 ### Example
-Legal concept "Vertrag mit Schutzwirkung zugunsten Dritter" with 4 test points:
-- Leistungsnähe → **Näh**
-- Interesse des Gläubigers → **In**
-- Erkennbarkeit → **Erk**
-- Bedürftigkeit → **Bed**
+IT concept "ACID properties of database transactions" with 4 properties:
+- Atomicity → **At**
+- Consistency → **Con**
+- Isolation → **Iso**
+- Durability → **Dur**
 
-Mnemonic: Schutzwirk**Näh****In****Erk****Bed**
+Mnemonic: ACID**At****Con****Iso****Dur**
 
 HTML in Back field:
 ```html
-Merkhilfe: Schutzwirk<b><span style="color:#e24b4a">Näh</span><span style="color:#378add">In</span><span style="color:#639922">Erk</span><span style="color:#ef9f27">Bed</span></b>
+Mnemonic: ACID<b><span style="color:#e24b4a">At</span><span style="color:#378add">Con</span><span style="color:#639922">Iso</span><span style="color:#ef9f27">Dur</span></b>
 ```
 
 ### Color palette for syllables
@@ -71,8 +83,8 @@ Merkhilfe: Schutzwirk<b><span style="color:#e24b4a">Näh</span><span style="colo
 Front (question);Back (atomic answer + example);Tags
 ```
 - Front: Question, optionally with MCQ options
-- Back: Atomic answer. Include real-world example in brackets for application cards.
-- Tags: Space-separated, derived from source reference
+- Back: Atomic answer. Include real-world example in brackets for application cards, using the same inline HTML formatting as the mnemonic line (colored `<span>`, `<b>` — no size changes).
+- Tags: See rule 13 for the required structured tag schema
 
 ### #CLOZE
 ```
@@ -81,6 +93,7 @@ Sentence with {{c1::cloze deletion}};Tags
 - Sentence provides context
 - Cloze only the answer part
 - Options can be in the text, but only cloze the answer
+- Tags: See rule 13 for the required structured tag schema
 
 ### #IMAGE_OCCLUSION_LABELS
 ```
@@ -110,13 +123,13 @@ For import via `scripts/import_cards.py`, write cards to a JSON file:
             "type": "basic",
             "front": "Question text",
             "back": "Answer with <br>HTML<br> if needed",
-            "tags": ["source_file", "concept_name"],
+            "tags": ["subject:X::chapterXX", "type:Basic", "source:Filename.ext", "origin:Filename > Chapter > Slide N"],
             "ref": "Filename > Chapter > Slide N"
         },
         {
             "type": "cloze",
             "text": "Sentence with {{c1::cloze part}}.",
-            "tags": ["source_file", "concept_name"],
+            "tags": ["subject:X::chapterXX", "type:Cloze", "source:Filename.ext", "origin:Filename > Chapter > Slide N"],
             "ref": "Filename > Chapter > Slide N"
         }
     ]
