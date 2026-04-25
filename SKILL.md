@@ -5,6 +5,9 @@ description: |
   Use this skill whenever the user wants to create Anki cards, flashcards, or
   Lernkarten from PDFs, presentations, or other study materials. Also use when
   the user mentions Anki, spaced repetition, or exam preparation with flashcards.
+  Also proactively suggest a card at the end of any response where the user
+  explains a concept, asks about something worth long-term remembering, or
+  encounters a notable gotcha or mental model — even without invoking /anki.
   Triggers: anki, flashcards, Lernkarten, Karteikarten, spaced repetition,
   "Karten erstellen", "cards from PDF", exam prep cards.
 license: MIT
@@ -20,13 +23,33 @@ for effective spaced repetition learning.
 
 ## Workflow
 
+### Batch import (from documents)
+
 1. **Read the card guidelines** in `references/card_guidelines.md` before creating any cards.
 2. **Read the source material** (PDF, PPTX, or other documents).
 3. **Identify core concepts** — cluster content by concept, not by slide or paragraph.
 4. **Create cards** following the guidelines (nucleus principle, minimum information, mnemonics).
 5. **Present cards to the user** for review and approval.
-6. **Write cards to JSON** in the import format (see below).
+6. **Write cards to JSON** to `/tmp/anki_cards.json` by default (unless the user specifies a different path).
 7. **Guide the user** to run the import script from their Terminal.
+
+### Proactive suggestions (during conversation)
+
+When the user explains a concept, asks about something worth remembering long-term,
+or encounters a notable gotcha or mental model — even without invoking `/anki` —
+propose a card at the end of your response:
+
+```
+💡 Anki card?
+Front: <concise question>
+Back:  <atomic answer>
+Deck:  <suggested deck>
+Tags:  <structured tags per guideline rule 13>
+```
+
+Wait for the user to confirm ("ja" / "yes" / feedback) before writing the JSON.
+Do not suggest a card if the topic is trivial, already well-known, or the user is
+clearly not in a learning context.
 
 ## Card Creation Rules
 
@@ -99,6 +122,28 @@ python /path/to/scripts/import_cards.py /path/to/cards.json
 ### Dry run (validate without importing)
 ```bash
 python /path/to/scripts/import_cards.py /path/to/cards.json --dry-run
+```
+
+### Duplicate handling
+When a duplicate is detected the user is prompted interactively:
+- **[R]eplace** — delete old card, create new one (metadata lost)
+- **[U]pdate** — update fields of existing card, metadata preserved by default;
+  optionally reset review history when prompted
+- **[S]kip** — leave existing card unchanged
+
+Non-interactive modes (no prompt):
+```bash
+# Auto-replace all duplicates
+python import_cards.py cards.json --on-duplicate replace
+
+# Auto-update, keep review history
+python import_cards.py cards.json --on-duplicate update --keep-metadata
+
+# Auto-update, reset review history
+python import_cards.py cards.json --on-duplicate update --reset-metadata
+
+# Auto-skip all duplicates
+python import_cards.py cards.json --on-duplicate skip
 ```
 
 ## Note Types

@@ -247,6 +247,32 @@ class AnkiConnect:
         """Delete notes by their IDs."""
         self.invoke("deleteNotes", notes=note_ids)
 
+    def update_note_fields(self, note_id: int, fields: dict[str, str]) -> None:
+        """Update the fields of an existing note.
+
+        Args:
+            note_id: The ID of the note to update.
+            fields: Dict mapping field names to new values.
+        """
+        self.invoke("updateNoteFields", note={"id": note_id, "fields": fields})
+
+    def update_note_tags(self, note_id: int, tags: list[str]) -> None:
+        """Replace all tags on a note.
+
+        Args:
+            note_id: The note ID.
+            tags: New list of tags (replaces all existing tags).
+        """
+        self.invoke("updateNoteTags", note=note_id, tags=" ".join(tags))
+
+    def forget_cards(self, card_ids: list[int]) -> None:
+        """Reset cards to new status, clearing review history and scheduling.
+
+        Args:
+            card_ids: List of card IDs to forget (not note IDs).
+        """
+        self.invoke("forgetCards", cards=card_ids)
+
     # ── Sync ─────────────────────────────────────────────────────────
 
     def sync(self) -> None:
