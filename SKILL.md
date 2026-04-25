@@ -31,7 +31,11 @@ for effective spaced repetition learning.
 4. **Create cards** following the guidelines (nucleus principle, minimum information, mnemonics).
 5. **Present cards to the user** for review and approval.
 6. **Write cards to JSON** to `/tmp/anki_cards.json` by default (unless the user specifies a different path).
-7. **Guide the user** to run the import script from their Terminal.
+7. **Import automatically if running in Claude Code** — run the import script via Bash immediately after writing the JSON and show the result. No Terminal step needed for the user.
+   ```bash
+   python /path/to/scripts/import_cards.py /tmp/anki_cards.json
+   ```
+   If running in Claude Desktop or another environment without Bash access, guide the user to run the import script from their Terminal instead.
 
 ### Proactive suggestions (during conversation)
 

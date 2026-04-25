@@ -77,11 +77,7 @@ Full guidelines: [`references/card_guidelines.md`](references/card_guidelines.md
 2. **Start Claude Code** by running `claude` in your Terminal.
 3. **Invoke the skill** — type `/anki` and attach your study file, or just start explaining a topic. Claude will suggest cards as you learn.
 4. **Review the proposed cards** — confirm, adjust, or reject each card before anything is written.
-5. **Claude writes the cards** to `/tmp/anki_cards.json` (or a path you specify).
-6. **Import into Anki** — run the import script in your Terminal:
-   ```bash
-   python ~/.claude/skills/anki/scripts/import_cards.py /tmp/anki_cards.json
-   ```
+5. **Claude writes and imports automatically** — Claude writes the cards to `/tmp/anki_cards.json` and runs the import script for you. The result appears directly in the conversation. No Terminal step needed.
 
 ---
 
