@@ -29,7 +29,13 @@ for effective spaced repetition learning.
 2. **Read the source material** (PDF, PPTX, or other documents).
 3. **Identify core concepts** — cluster content by concept, not by slide or paragraph.
 4. **Create cards** following the guidelines (nucleus principle, minimum information, mnemonics).
-5. **Present cards to the user** for review and approval.
+5. **Present cards to the user** for review and approval using the ASCII card format below.
+   If more than 5 cards were created, show them in pages of 5. After each page display:
+   ```
+   ── Page 1/3 ── [n] for next ──
+   ```
+   Wait for the user to send any reply (e.g. a single space or enter) before showing the next page.
+   After the last page, show the approve/edit/skip prompt.
 6. **Write cards to JSON** to `/tmp/anki_cards.json` by default (unless the user specifies a different path).
 7. **Import automatically if running in Claude Code** — run the import script via Bash immediately after writing the JSON and show the result. No Terminal step needed for the user.
    ```bash
@@ -54,6 +60,28 @@ Tags:  <structured tags per guideline rule 13>
 Wait for the user to confirm ("ja" / "yes" / feedback) before writing the JSON.
 Do not suggest a card if the topic is trivial, already well-known, or the user is
 clearly not in a learning context.
+
+## Card Preview Format
+
+Render each card in ASCII style before asking for approval:
+
+```
+┌─ Card 01 · Basic ───────────────────────────────-─────┐
+│ FRONT                                               │
+│ What is Atomicity in ACID?                          │
+├─────────────────────────────────────────────────────┤
+│ BACK                                                │
+│ A transaction is all-or-nothing — completes fully   │
+│ or not at all.                                      │
+├─────────────────────────────────────────────────────┤
+│ Tags: subject:DB::chapter01 · type:Basic            │
+│ Ref:  lecture.pdf > Chapter 1 > Slide 5             │
+└─────────────────────────────────────────────────────┘
+```
+
+- Show max **5 cards per page**
+- After each page (except the last): `── Page 1/3 ── [n] for next ──`
+- After the last page: `── Start import? [y] yes · [n] no ──`
 
 ## Card Creation Rules
 
