@@ -1,15 +1,11 @@
 ---
 name: anki
 description: |
-  Create Anki flashcards from study materials and import them via AnkiConnect.
-  Use this skill whenever the user wants to create Anki cards, flashcards, or
-  Lernkarten from PDFs, presentations, or other study materials. Also use when
-  the user mentions Anki, spaced repetition, or exam preparation with flashcards.
-  Also proactively suggest a card at the end of any response where the user
-  explains a concept, asks about something worth long-term remembering, or
-  encounters a notable gotcha or mental model — even without invoking /anki.
+  Anki flashcard skill — create cards from documents or conversation and import
+  via AnkiConnect. Proactively suggest a card whenever a concept worth remembering
+  comes up, even without /anki.
   Triggers: anki, flashcards, Lernkarten, Karteikarten, spaced repetition,
-  "Karten erstellen", "cards from PDF", exam prep cards.
+  "Karten erstellen", "cards from PDF", exam prep.
 license: MIT
 ---
 
