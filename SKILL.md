@@ -13,190 +13,32 @@ description: |
 license: MIT
 ---
 
-# Anki Card Creation Skill
+# Anki Skill — Dispatcher
 
-## Overview
-
-This skill creates high-quality Anki flashcards from study materials and imports
-them into Anki via the AnkiConnect REST API. It follows evidence-based principles
-for effective spaced repetition learning.
-
-## Workflow
-
-### Batch import (from documents)
-
-1. **Read the card guidelines** in `references/card_guidelines.md` before creating any cards.
-2. **Read the source material** (PDF, PPTX, or other documents).
-3. **Identify core concepts** — cluster content by concept, not by slide or paragraph.
-4. **Create cards** following the guidelines (nucleus principle, minimum information, mnemonics).
-5. **Present cards to the user** for review and approval using the ASCII card format below.
-   If more than 5 cards were created, show them in pages of 5. After each page display:
-   ```
-   ── Page 1/3 ── [n] for next ──
-   ```
-   Wait for the user to send any reply (e.g. a single space or enter) before showing the next page.
-   After the last page, show the approve/edit/skip prompt.
-6. **Write cards to JSON** to `/tmp/anki_cards.json` by default (unless the user specifies a different path).
-7. **Run pre-import check** — before importing, analyse duplicates and review stats:
-   - **Claude Code:** run automatically via Bash:
-     ```bash
-     python /path/to/scripts/import_cards.py /tmp/anki_cards.json --check
-     ```
-   - **Cowork / Chat:** provide the command as a ready-to-paste snippet for the user to run in their Terminal and paste the output back.
-
-   Present the stats report to the user:
-   - How many new cards
-   - How many duplicates (with review count, interval, ease, lapses for each)
-   Then ask:
-   - *"Proceed with import?"*
-   - *"Reset learning stats for duplicates?"* (only if learned duplicates exist)
-
-8. **Import** — once confirmed:
-   - **Claude Code:** run automatically via Bash:
-     ```bash
-     python /path/to/scripts/import_cards.py /tmp/anki_cards.json --on-duplicate [replace|update|skip] [--reset-metadata|--keep-metadata]
-     ```
-   - **Cowork / Chat:** provide the exact command as a ready-to-paste snippet for the user to run in their Terminal.
-
-### Proactive suggestions (during conversation)
-
-When the user explains a concept, asks about something worth remembering long-term,
-or encounters a notable gotcha or mental model — even without invoking `/anki` —
-propose a card at the end of your response:
+When this skill is invoked (via `/anki` or a matching trigger), ask the user
+to choose a mode — unless it is already obvious from context (e.g. a file was
+attached → Mode 2; a concept was just explained → Mode 1).
 
 ```
-💡 Anki card?
-Front: <concise question>
-Back:  <atomic answer>
-Deck:  <suggested deck>
-Tags:  <structured tags per guideline rule 13>
+What would you like to do?
+[1] Create a single card  — for a concept from our conversation
+[2] Import from document  — batch cards from a PDF, PPTX, or other file
 ```
 
-Wait for the user to confirm ("ja" / "yes" / feedback) before writing the JSON.
-Do not suggest a card if the topic is trivial, already well-known, or the user is
-clearly not in a learning context.
+Then load and follow the instructions for the chosen mode:
 
-## Card Preview Format
+| Choice | Instructions |
+|--------|-------------|
+| 1 — Single card | `references/mode_single_card.md` |
+| 2 — Import from document | `references/mode_import_docs.md` |
 
-Render each card in ASCII style before asking for approval:
+Both modes share:
+- **Card preview format & paging** → `references/shared_preview.md`
+- **Pre-import check & import** → `references/shared_import.md`
+- **Card creation rules** → `references/card_guidelines.md`
 
-```
-┌─ Card 01 · Basic ──────────────────────────────────────┐
-│ FRONT                                               │
-│ What is Atomicity in ACID?                          │
-├─────────────────────────────────────────────────────┤
-│ BACK                                                │
-│ A transaction is all-or-nothing — completes fully   │
-│ or not at all.                                      │
-├─────────────────────────────────────────────────────┤
-│ Tags: subject:DB::chapter01 · type:Basic            │
-│ Ref:  lecture.pdf > Chapter 1 > Slide 5             │
-└─────────────────────────────────────────────────────┘
-```
+## Proactive suggestions (no invocation needed)
 
-- Strip all HTML tags and color spans — show plain text only
-- Show max **5 cards per page**
-- After each page (except the last): `── Page 1/3 ── [n] for next ──`
-- After the last page: `── Start import? [y] yes · [n] no ──`
-
-## Card Creation Rules
-
-Read `references/card_guidelines.md` for the complete set of rules. Key principles:
-
-- **Cluster by concept** — not one card per slide.
-- **Nucleus principle** — each concept gets ≥3 cards (definition, rule, application).
-- **Minimum information** — one atomic fact per card, answers <5 words.
-- **Learn before memorizing** — context card before detail cards.
-- **Mnemonics for lists** — colored syllable mnemonics in the Back field.
-- **Self-contained** — no pronouns, full names, understandable without context.
-- **References** — every card gets a source reference: `Filename > Chapter > Slide N`.
-
-## JSON Format
-
-Write cards to a JSON file that `scripts/import_cards.py` can import:
-
-```json
-{
-    "deck": "DL Certification::01 Roles and Responsibilities",
-    "cards": [
-        {
-            "type": "basic",
-            "front": "What is Delivery at Accenture?",
-            "back": "Fulfilment of commercial and emotional commitments",
-            "tags": ["01_Roles", "concept_delivery"],
-            "ref": "01_Roles and Responsibilities > 01 What is Delivery > Slide 5"
-        },
-        {
-            "type": "cloze",
-            "text": "Every Accenture contract is assigned exactly {{c1::one}} RDE.",
-            "tags": ["01_Roles", "concept_rde"],
-            "ref": "01_Roles and Responsibilities > 01 What is Delivery > Slide 10"
-        }
-    ]
-}
-```
-
-### Card types
-
-- `basic` — requires `front` and `back` fields. Use for definitions, Q&A, lists.
-- `cloze` — requires `text` field with `{{c1::...}}` cloze deletions.
-
-### Tags
-
-Use tags to categorize cards by source file and concept cluster.
-
-### HTML in fields
-
-Anki renders HTML in fields. Use for:
-- Line breaks: `<br>`
-- Mnemonic formatting: `<span style="color:#e24b4a">Silbe</span>`
-- Bold: `<b>...</b>`
-
-## Import via AnkiConnect
-
-The user must run the import script from their own Terminal because AnkiConnect
-runs on localhost and is not reachable from the Claude sandbox.
-
-### Prerequisites
-- Anki must be running
-- AnkiConnect add-on installed (code: 2055492159)
-- AnkiConnect listening on 127.0.0.1:8765
-
-### Import command
-```bash
-python /path/to/scripts/import_cards.py /path/to/cards.json
-```
-
-### Dry run (validate without importing)
-```bash
-python /path/to/scripts/import_cards.py /path/to/cards.json --dry-run
-```
-
-### Duplicate handling
-When a duplicate is detected the user is prompted interactively:
-- **[R]eplace** — delete old card, create new one (metadata lost)
-- **[U]pdate** — update fields of existing card, metadata preserved by default;
-  optionally reset review history when prompted
-- **[S]kip** — leave existing card unchanged
-
-Non-interactive modes (no prompt):
-```bash
-# Auto-replace all duplicates
-python import_cards.py cards.json --on-duplicate replace
-
-# Auto-update, keep review history
-python import_cards.py cards.json --on-duplicate update --keep-metadata
-
-# Auto-update, reset review history
-python import_cards.py cards.json --on-duplicate update --reset-metadata
-
-# Auto-skip all duplicates
-python import_cards.py cards.json --on-duplicate skip
-```
-
-## Note Types
-
-The import script creates two custom note types if they don't exist:
-
-- **DL-Basic** — Fields: Front, Back, Ref. Clean card template with reference line.
-- **DL-Cloze** — Fields: Text, Ref. Cloze deletion template with reference line.
+Even without `/anki`, follow the proactive suggestion rules in
+`references/mode_single_card.md` whenever the user explains a concept or
+encounters a gotcha worth remembering long-term.
