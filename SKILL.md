@@ -66,7 +66,7 @@ clearly not in a learning context.
 Render each card in ASCII style before asking for approval:
 
 ```
-┌─ Card 01 · Basic ───────────────────────────────-─────┐
+┌─ Card 01 · Basic ──────────────────────────────────────┐
 │ FRONT                                               │
 │ What is Atomicity in ACID?                          │
 ├─────────────────────────────────────────────────────┤
@@ -79,6 +79,7 @@ Render each card in ASCII style before asking for approval:
 └─────────────────────────────────────────────────────┘
 ```
 
+- Strip all HTML tags and color spans — show plain text only
 - Show max **5 cards per page**
 - After each page (except the last): `── Page 1/3 ── [n] for next ──`
 - After the last page: `── Start import? [y] yes · [n] no ──`

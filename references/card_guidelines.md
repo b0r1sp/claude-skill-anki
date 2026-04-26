@@ -26,7 +26,7 @@
    `Filename > Chapter > Slide N`
    Example: `01_Roles and Responsibilities > 01 What is Delivery? > Slide 5`
 
-10. **Mnemonics for lists/sets** — Build coordinated mnemonic words for list knowledge. See the Mnemonic System section below.
+10. **Mnemonics for lists/sets** — For any ordered list, build a fantasy word from syllables of each item and a sentence where each word is a creative blend of the original term. See the Mnemonic System section below.
 
 11. **No comma-separated sentences** — Never write answers as comma-separated lists. Decompose them into individual atomic items using `<br>` or bullet points in the Back field.
 
@@ -40,41 +40,38 @@
 
 ## Mnemonic System
 
-For any list or set of items that must be memorized, create a fantasy mnemonic word. The word consists of two parts:
-
-- **Name part** — identifies what the list is about (e.g. "Service" for service groups)
-- **Memory part** — syllables from each list item, woven together
+For any list or set of items that must be memorized, build a mnemonic by taking a syllable from each item (in order) to form a fantasy word, then compose a sentence where each word is a creative blend or fantasy derivation of the original term.
 
 ### Rules for mnemonic construction
-- Use syllables that clearly reference each list item
-- **First, try to form a meaningful or funny real word** from the syllables — a word that exists in any language and is easy to remember or amusing. Only fall back to a fantasy word if no satisfying real word can be found.
-- Weave syllables into an organic word that feels natural to speak
-- Use HTML color spans to highlight each syllable in the Back field
-- **Keep the source language** — syllables must come from the original language of the material. Do not translate terms into another language to form the mnemonic.
+- Take a **syllable** from each item — in order, never reorder
+- Weave the syllables into a **fantasy word** (e.g. OppMobExeClo)
+- Write a **sentence** where each word is a creative/fantasy derivation of the original term (e.g. Mobilization → "Mobst", Execution → "Exentually")
+- The sentence should **hint at the meaning** of the list while using the blended words
+- **Color the syllable** in both the fantasy word and the corresponding sentence word using the color palette below
+- **Keep the source language** — syllables and sentence must come from the original language of the material
 
 ### Example
-IT concept "ACID properties of database transactions" with 4 properties:
-- Atomicity → **At**
-- Consistency → **Con**
-- Isolation → **Iso**
-- Durability → **Dur**
+Project lifecycle phases: Opportunity → Mobilization → Execution → Closure
 
-Mnemonic: ACID**At****Con****Iso****Dur**
+Fantasy word: **OppMobExeClo**
+Sentence: *"Opportunities Mobst Exentually Close"*
 
 HTML in Back field:
 ```html
-Mnemonic: ACID<b><span style="color:#e24b4a">At</span><span style="color:#378add">Con</span><span style="color:#639922">Iso</span><span style="color:#ef9f27">Dur</span></b>
+Mnemonic: <b><span style="color:#e24b4a">Opp</span><span style="color:#378add">Mob</span><span style="color:#639922">Exe</span><span style="color:#ef9f27">Clo</span></b>
+— <i>"<span style="color:#e24b4a">Opp</span>ortunities <span style="color:#378add">Mob</span>st <span style="color:#639922">Exe</span>ntually <span style="color:#ef9f27">Clo</span>se"</i>
 ```
 
-### Color palette for syllables
-| Position | Color   | Hex       |
-|----------|---------|-----------|
-| 1st      | Red     | `#e24b4a` |
-| 2nd      | Blue    | `#378add` |
-| 3rd      | Green   | `#639922` |
-| 4th      | Amber   | `#ef9f27` |
-| 5th      | Purple  | `#7f77dd` |
-| 6th      | Teal    | `#1d9e75` |
+### Color palette
+| Position | Color  | Hex       |
+|----------|--------|-----------|
+| 1st      | Red    | `#e24b4a` |
+| 2nd      | Blue   | `#378add` |
+| 3rd      | Green  | `#639922` |
+| 4th      | Amber  | `#ef9f27` |
+| 5th      | Purple | `#7f77dd` |
+| 6th      | Teal   | `#1d9e75` |
+
 
 ## Card Formats
 

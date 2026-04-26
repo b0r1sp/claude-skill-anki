@@ -52,7 +52,7 @@ If `~/.claude/skills/` didn't exist before, restart Claude Code once so it picks
 
 ## Card creation principles
 
-Cards follow a nucleus approach — each core concept gets at least three cards from different angles (definition, rule, application). Lists use colored-syllable mnemonics for recall. Every card is self-contained and references its source slide.
+Cards follow a nucleus approach — each core concept gets at least three cards from different angles (definition, rule, application). For ordered lists, a mnemonic is built from syllables of each item to form a fantasy word (e.g. *OppMobExeClo*), paired with a sentence where each word is a creative blend of the original term (e.g. *"Opportunities Mobst Exentually Close"*) — syllables color-coded for instant recall. Every card is self-contained and references its source slide.
 
 Full guidelines: [`references/card_guidelines.md`](references/card_guidelines.md)
 
