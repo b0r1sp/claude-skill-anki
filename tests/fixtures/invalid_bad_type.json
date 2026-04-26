@@ -1,0 +1,12 @@
+{
+    "deck": "Test Deck",
+    "cards": [
+        {
+            "type": "image_occlusion",
+            "front": "What is X?",
+            "back": "X is Y",
+            "tags": [],
+            "ref": ""
+        }
+    ]
+}

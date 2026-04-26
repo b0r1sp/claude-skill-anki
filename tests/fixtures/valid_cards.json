@@ -1,0 +1,18 @@
+{
+    "deck": "Test Deck::Unit Tests",
+    "cards": [
+        {
+            "type": "basic",
+            "front": "What is Atomicity in ACID?",
+            "back": "All-or-nothing transaction",
+            "tags": ["subject:DB::chapter01", "type:Basic", "source:lecture.pdf", "origin:lecture.pdf > Chapter 1 > Slide 5"],
+            "ref": "lecture.pdf > Chapter 1 > Slide 5"
+        },
+        {
+            "type": "cloze",
+            "text": "A transaction either completes {{c1::fully}} or not at all.",
+            "tags": ["subject:DB::chapter01", "type:Cloze", "source:lecture.pdf", "origin:lecture.pdf > Chapter 1 > Slide 6"],
+            "ref": "lecture.pdf > Chapter 1 > Slide 6"
+        }
+    ]
+}

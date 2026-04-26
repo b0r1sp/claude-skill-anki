@@ -1,7 +1,7 @@
 SKILL_NAME = anki
 ZIP_FILE   = $(SKILL_NAME).zip
 
-.PHONY: zip clean
+.PHONY: zip clean test
 
 zip: clean
 	mkdir -p build/$(SKILL_NAME)
@@ -10,6 +10,9 @@ zip: clean
 	cd build && zip -r ../$(ZIP_FILE) $(SKILL_NAME) -x "*/__pycache__/*" -x "*/.DS_Store"
 	rm -rf build
 	@echo "✓ Created $(ZIP_FILE)"
+
+test:
+	python3 -m unittest discover -s tests -v
 
 clean:
 	rm -f $(ZIP_FILE)

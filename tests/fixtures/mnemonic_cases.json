@@ -1,0 +1,49 @@
+[
+    {
+        "description": "4-item project lifecycle",
+        "items": [
+            {"syllable": "Opp", "blend": "Opportunities"},
+            {"syllable": "Mob", "blend": "Mobst"},
+            {"syllable": "Exe", "blend": "Exentually"},
+            {"syllable": "Clo", "blend": "Close"}
+        ],
+        "expected_fantasy_word": "OppMobExeClo",
+        "expected_sentence": "Opportunities Mobst Exentually Close"
+    },
+    {
+        "description": "2-item ACID subset",
+        "items": [
+            {"syllable": "At",  "blend": "Atomically"},
+            {"syllable": "Con", "blend": "Consistently"}
+        ],
+        "expected_fantasy_word": "AtCon",
+        "expected_sentence": "Atomically Consistently"
+    },
+    {
+        "description": "6-item uses all palette colors",
+        "items": [
+            {"syllable": "Al", "blend": "Always"},
+            {"syllable": "Be", "blend": "Being"},
+            {"syllable": "Ca", "blend": "Careful"},
+            {"syllable": "De", "blend": "Delivering"},
+            {"syllable": "Ex", "blend": "Excellent"},
+            {"syllable": "Fi", "blend": "Finally"}
+        ],
+        "expected_fantasy_word": "AlBeCaDeExFi",
+        "expected_sentence": "Always Being Careful Delivering Excellent Finally"
+    },
+    {
+        "description": "7-item wraps color palette",
+        "items": [
+            {"syllable": "A", "blend": "Alpha"},
+            {"syllable": "B", "blend": "Beta"},
+            {"syllable": "C", "blend": "Ceta"},
+            {"syllable": "D", "blend": "Delta"},
+            {"syllable": "E", "blend": "Epsilon"},
+            {"syllable": "F", "blend": "Feta"},
+            {"syllable": "G", "blend": "Gamma"}
+        ],
+        "expected_fantasy_word": "ABCDEFG",
+        "expected_sentence": "Alpha Beta Ceta Delta Epsilon Feta Gamma"
+    }
+]

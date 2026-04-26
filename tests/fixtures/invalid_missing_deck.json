@@ -1,0 +1,11 @@
+{
+    "cards": [
+        {
+            "type": "basic",
+            "front": "What is X?",
+            "back": "X is Y",
+            "tags": [],
+            "ref": ""
+        }
+    ]
+}
