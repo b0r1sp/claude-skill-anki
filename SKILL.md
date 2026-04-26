@@ -37,21 +37,26 @@ for effective spaced repetition learning.
    Wait for the user to send any reply (e.g. a single space or enter) before showing the next page.
    After the last page, show the approve/edit/skip prompt.
 6. **Write cards to JSON** to `/tmp/anki_cards.json` by default (unless the user specifies a different path).
-7. **Run pre-import check** (Claude Code only) — before importing, run the check mode to analyse duplicates and review stats:
-   ```bash
-   python /path/to/scripts/import_cards.py /tmp/anki_cards.json --check
-   ```
+7. **Run pre-import check** — before importing, analyse duplicates and review stats:
+   - **Claude Code:** run automatically via Bash:
+     ```bash
+     python /path/to/scripts/import_cards.py /tmp/anki_cards.json --check
+     ```
+   - **Cowork / Chat:** provide the command as a ready-to-paste snippet for the user to run in their Terminal and paste the output back.
+
    Present the stats report to the user:
    - How many new cards
    - How many duplicates (with review count, interval, ease, lapses for each)
    Then ask:
    - *"Proceed with import?"*
    - *"Reset learning stats for duplicates?"* (only if learned duplicates exist)
-8. **Import** — once confirmed, run the actual import with the user's chosen options:
-   ```bash
-   python /path/to/scripts/import_cards.py /tmp/anki_cards.json --on-duplicate [replace|update|skip] [--reset-metadata|--keep-metadata]
-   ```
-   If running in Claude Desktop or another environment without Bash access, guide the user to run the check and import scripts from their Terminal instead.
+
+8. **Import** — once confirmed:
+   - **Claude Code:** run automatically via Bash:
+     ```bash
+     python /path/to/scripts/import_cards.py /tmp/anki_cards.json --on-duplicate [replace|update|skip] [--reset-metadata|--keep-metadata]
+     ```
+   - **Cowork / Chat:** provide the exact command as a ready-to-paste snippet for the user to run in their Terminal.
 
 ### Proactive suggestions (during conversation)
 

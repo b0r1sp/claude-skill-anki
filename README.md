@@ -8,17 +8,12 @@ A Claude Skill for creating high-quality Anki flashcards from study materials an
 
 - Python 3.10+
 - [Anki](https://apps.ankiweb.net/) with [AnkiConnect](https://ankiweb.net/shared/info/2055492159) add-on (code: `2055492159`)
-- AnkiConnect listening on `127.0.0.1:8765` (default)
 
 No external Python dependencies — uses only the standard library.
 
-### Claude Desktop
+### Claude Code
 
-1. Download `anki.zip` from the [latest release](../../releases/latest)
-2. Open Claude Desktop → **Preferences → Skills → Upload Skill**
-3. Select `anki.zip` — done
-
-### Claude Code (CLI)
+The recommended way to use this skill — either via the CLI or the Claude Code Desktop app. 
 
 ```bash
 git clone https://github.com/b0r1sp/claude-skill-anki.git
@@ -30,12 +25,19 @@ Then either **copy** (simple, self-contained):
 cp -r claude-skill-anki ~/.claude/skills/anki
 ```
 
-Or **symlink**:
+Or **symlink** (stays in sync with `git pull`):
 ```bash
 ln -s "$PWD/claude-skill-anki" ~/.claude/skills/anki
 ```
 
 If `~/.claude/skills/` didn't exist before, restart Claude Code once so it picks up the new directory: type `exit` or press `Ctrl+D`, then run `claude` again. After that, the skill auto-loads in every session.
+
+### Claude Chat / Cowork
+
+1. Download `anki.zip` from the [latest release](../../releases/latest)
+2. Open **Preferences → Skills → Upload Skill** and select `anki.zip`
+
+The skill works the same way like in Claude Code and will help you create cards. When it's time to import, run the provided command in the Terminal — the skill prepares it for you as a ready-to-paste snippet.
 
 ---
 
@@ -45,10 +47,10 @@ If `~/.claude/skills/` didn't exist before, restart Claude Code once so it picks
 2. Clusters content by core concepts
 3. Creates cards following evidence-based spaced repetition principles
 4. Exports cards as JSON
-5. Imports into Anki via AnkiConnect — with interactive duplicate handling (replace, update, or skip)
-6. Queries and lists existing notes via CLI
-7. Proactively suggests cards during conversation when a concept worth remembering comes up
-
+5. Runs a pre-import check — shows duplicate and review stats before touching anything
+6. Imports into Anki via AnkiConnect — with interactive duplicate handling (replace, update, or skip)
+7. Queries and lists existing notes via CLI
+8. Proactively suggests cards during conversation when a concept worth remembering comes up
 
 ## Card creation principles
 
@@ -58,30 +60,22 @@ Full guidelines: [`references/card_guidelines.md`](references/card_guidelines.md
 
 ## Usage
 
-### Claude Desktop
-
-1. **Make sure Anki is open** on your computer with the AnkiConnect add-on installed.
-2. **Open Claude Desktop** — the Anki skill is available automatically.
-3. **Share your study material** — attach a PDF or presentation and say something like *"Create Anki cards from this."* Or just start a conversation: if you explain a concept, Claude will suggest a card on its own.
-4. **Review the proposed cards** — Claude shows you each card before doing anything. Approve, edit, or skip as you like.
-5. **Save the card file** — Claude writes the cards to `/tmp/anki_cards.json` (or a path you specify).
-6. **Import into Anki** — open your Terminal and run:
-   ```bash
-   python scripts/import_cards.py /tmp/anki_cards.json
-   ```
-   If a card already exists in your deck, you'll be asked whether to replace it, update it, or skip it.
-
-### Claude Code (CLI)
-
-1. **Make sure Anki is open** on your computer with the AnkiConnect add-on installed.
+1. **Make sure Anki is open** with the AnkiConnect add-on installed.
 2. **Start Claude Code** by running `claude` in your Terminal.
 3. **Invoke the skill** — type `/anki` and attach your study file, or just start explaining a topic. Claude will suggest cards as you learn.
-4. **Review the proposed cards** — confirm, adjust, or reject each card before anything is written.
-5. **Claude writes and imports automatically** — Claude writes the cards to `/tmp/anki_cards.json` and runs the import script for you. The result appears directly in the conversation. No Terminal step needed.
+4. **Review the proposed cards** — Claude shows each card in an ASCII preview. Confirm, adjust, or reject before anything is written.
+5. **Pre-import check** — Claude runs `--check` automatically, shows duplicate and review stats, and asks for confirmation.
+6. **Claude imports** — writes `/tmp/anki_cards.json` and runs the import script. Results appear directly in the conversation.
 
 ---
 
 ## Technical Reference
+
+### Pre-import analysis
+
+```bash
+python scripts/import_cards.py path/to/cards.json --check
+```
 
 ### Import cards from JSON
 
