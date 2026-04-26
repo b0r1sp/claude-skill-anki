@@ -232,6 +232,107 @@ def _do_update(
             anki.forget_cards(card_ids)
 
 
+def check_cards(anki: AnkiConnect, data: dict) -> dict:
+    """Analyse a card set against the existing Anki collection without importing.
+
+    For each card:
+    - Checks if a duplicate exists in the target deck
+    - For duplicates, fetches review stats (reviews, interval, ease, lapses)
+
+    Returns a report dict:
+    {
+        "total": int,
+        "new": int,
+        "duplicates": [
+            {
+                "index": int,          # 1-based card index
+                "card": dict,          # original card data
+                "note": dict,          # existing note info
+                "reviews": int,
+                "interval": int,       # days
+                "ease": float,
+                "lapses": int,
+                "learned": bool,       # True if reviews > 0
+            },
+            ...
+        ]
+    }
+    """
+    deck = data["deck"]
+    cards = data["cards"]
+    duplicates = []
+
+    for i, card in enumerate(cards):
+        existing = find_duplicate_notes(anki, deck, card)
+        if not existing:
+            continue
+
+        note = existing[0]
+        card_ids = note.get("cards", [])
+
+        reviews = interval = lapses = 0
+        ease = 0.0
+
+        if card_ids:
+            try:
+                stats = anki.cards_info(card_ids)
+                if stats:
+                    # Aggregate across all cards of the note
+                    reviews = sum(c.get("reviews", 0) for c in stats)
+                    lapses = sum(c.get("lapses", 0) for c in stats)
+                    interval = max(c.get("interval", 0) for c in stats)
+                    ease = round(stats[0].get("factor", 2500) / 1000, 2)
+            except AnkiConnectError:
+                pass
+
+        duplicates.append({
+            "index": i + 1,
+            "card": card,
+            "note": note,
+            "reviews": reviews,
+            "interval": interval,
+            "ease": ease,
+            "lapses": lapses,
+            "learned": reviews > 0,
+        })
+
+    return {
+        "total": len(cards),
+        "new": len(cards) - len(duplicates),
+        "duplicates": duplicates,
+    }
+
+
+def print_check_report(report: dict) -> None:
+    """Print a human-readable pre-import analysis report."""
+    dupes = report["duplicates"]
+    learned = [d for d in dupes if d["learned"]]
+    unlearned = [d for d in dupes if not d["learned"]]
+
+    print("─" * 50)
+    print("Pre-import analysis")
+    print("─" * 50)
+    print(f"  Total cards:        {report['total']}")
+    print(f"  New (no duplicate): {report['new']}")
+    print(f"  Duplicates:         {len(dupes)}")
+
+    if learned:
+        print(f"    ├─ Learned:       {len(learned)}")
+        for d in learned:
+            front = _strip_html(d["card"].get("front", d["card"].get("text", "")))[:50]
+            print(f"    │   [{d['index']}] {front}")
+            print(f"    │       reviews={d['reviews']}  interval={d['interval']}d"
+                  f"  ease={d['ease']}  lapses={d['lapses']}")
+
+    if unlearned:
+        print(f"    └─ Never reviewed: {len(unlearned)}")
+        for d in unlearned:
+            front = _strip_html(d["card"].get("front", d["card"].get("text", "")))[:50]
+            print(f"        [{d['index']}] {front}")
+
+    print("─" * 50)
+
+
 def import_cards(
     anki: AnkiConnect,
     data: dict,
@@ -345,6 +446,8 @@ def main():
     parser.add_argument("file", help="Path to the JSON file with card data")
     parser.add_argument("--host", default="127.0.0.1", help="AnkiConnect host (default: 127.0.0.1)")
     parser.add_argument("--port", type=int, default=8765, help="AnkiConnect port (default: 8765)")
+    parser.add_argument("--check", action="store_true",
+                        help="Analyse duplicates and review stats without importing")
     parser.add_argument("--dry-run", action="store_true", help="Validate without importing")
     parser.add_argument(
         "--on-duplicate",
@@ -404,6 +507,12 @@ def main():
             sys.exit(1)
 
     print()
+
+    # Check mode — analyse duplicates and stats, then exit
+    if args.check:
+        report = check_cards(anki, data)
+        print_check_report(report)
+        sys.exit(0)
 
     # Import
     result = import_cards(

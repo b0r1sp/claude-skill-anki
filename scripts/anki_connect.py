@@ -239,9 +239,19 @@ class AnkiConnect:
         """Get detailed info for a list of note IDs.
 
         Returns:
-            List of note info dicts.
+            List of note info dicts with fields, tags, and card IDs.
         """
         return self.invoke("notesInfo", notes=note_ids)
+
+    def cards_info(self, card_ids: list[int]) -> list[dict]:
+        """Get detailed review stats for a list of card IDs.
+
+        Returns dicts with: interval, ease, reviews, lapses, due, queue.
+
+        Args:
+            card_ids: List of card IDs (not note IDs).
+        """
+        return self.invoke("cardsInfo", cards=card_ids)
 
     def delete_notes(self, note_ids: list[int]) -> None:
         """Delete notes by their IDs."""
