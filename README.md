@@ -43,15 +43,18 @@ The skill works the same way like in Claude Code and will help you create cards.
 
 ## What it does
 
-1. Reads one or more study materials (PDF, PPTX, etc.)
-2. Asks if the deck is for an exam or certification — if yes, accepts assessment criteria (text, file, or screenshot)
-3. Clusters content by concept, weighted by assessment criteria — more cards for high-weight topics, fewer for low-weight ones
-4. Creates cards following evidence-based spaced repetition principles, scaling depth to topic importance
-5. Exports cards as JSON
-6. Runs a pre-import check — shows duplicate and review stats before touching anything
-7. Imports into Anki via AnkiConnect — with interactive duplicate handling (replace, update, or skip)
-8. Queries and lists existing notes via CLI
-9. Proactively suggests cards during conversation when a concept worth remembering comes up
+**Three modes:**
+- **Import from document(s)** — reads one or more PDFs/PPTXs, clusters by concept, and creates a full card set
+- **Create from conversation** — turns a concept from the current chat into cards instantly
+- **Research & create** — researches a topic from scratch, builds a structured learning plan, and creates cards
+
+**In all modes:**
+1. Assessment criteria support *(Import mode)* — accepts exam/certification weightings (text, file, or screenshot) to scale card depth by topic importance
+2. Evidence-based card creation — nucleus principle, mnemonics for lists, atomic answers
+3. Pre-import check — shows deck stats, duplicates, and review history before touching anything
+4. Import via AnkiConnect — interactive duplicate handling (replace, update, or skip)
+5. CLI tools for querying and listing existing notes
+6. Proactively suggests cards during conversation when a concept worth remembering comes up
 
 ## Card creation principles
 
@@ -63,8 +66,11 @@ Full guidelines: [`references/card_guidelines.md`](references/card_guidelines.md
 
 1. **Make sure Anki is open** with the AnkiConnect add-on installed.
 2. **Start Claude Code** by running `claude` in your Terminal.
-3. **Invoke the skill** — type `/anki` and attach one or more study files, or just start explaining a topic. Claude will suggest cards as you learn.
-4. **Exam or certification?** — Claude asks whether the deck is for an exam. If yes, provide the assessment criteria (paste text, attach a file, or share a screenshot). Claude OCRs screenshots, parses the weightings, and uses them throughout: high-weight topics get deeper clustering and more cards, low-weight topics get minimal coverage.
+3. **Invoke the skill** — type `/anki` and choose a mode:
+   - `[1]` **Import from document(s)** — attach one or more PDFs, PPTXs, or other files
+   - `[2]` **Create from conversation** — turn a concept from the current chat into cards
+   - `[3]` **Research & create** — give Claude a topic; it researches it, builds a learning plan, and creates cards
+4. **Exam or certification?** *(Mode 1 only)* — Claude asks whether the deck is for an exam. If yes, provide the assessment criteria (paste text, attach a file, or share a screenshot). Claude OCRs screenshots, parses the weightings, and uses them throughout: high-weight topics get deeper clustering and more cards, low-weight topics get minimal coverage.
 5. **Review the proposed cards** — Claude shows each card in an ASCII preview. Confirm, adjust, or reject before anything is written.
 6. **Select a deck** — Claude suggests a deck name based on the content:
    - `[1]` Create a new deck — enter a name

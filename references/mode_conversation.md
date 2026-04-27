@@ -1,14 +1,24 @@
-# Mode: Single Card
+# Mode: Create Cards from Conversation
 
-Use this mode when the user wants to create one card for a specific concept —
-either from the current conversation or by providing content directly.
+Use this mode when the user wants to create cards for a concept that came up
+in the current conversation.
 
 ## Workflow
 
-1. **Understand the concept** — ask the user what the concept is (or derive it from
-   the current conversation context if it's clear).
+1. **Identify the concept** — derive it from the conversation context, or ask
+   the user to clarify if it's not obvious.
 
-2. **Select deck** — propose a deck name based on the topic, then present:
+2. **Draft cards** — follow the card creation rules in `references/card_guidelines.md`.
+   Create at minimum a Basic card (definition) and one Cloze card (key fact).
+   Keep answers atomic (< 5 words unless it's a context/logic card).
+
+3. **Preview** — show the card(s) using the ASCII format from `references/shared_preview.md`.
+   Strip all HTML. After the last card show:
+   ```
+   ── Start import? [y] yes · [n] no ──
+   ```
+
+4. **Select deck** — propose a deck name based on the topic, then present:
    ```
    [1] Create new deck       — enter a name
    [2] Add to existing deck  — Suggested: My Subject::Chapter 01
@@ -19,15 +29,7 @@ either from the current conversation or by providing content directly.
    - **[3]** → query AnkiConnect for all deck names, show numbered list,
                user enters a number to select
 
-3. **Draft the card** — follow the card creation rules in `references/card_guidelines.md`.
-   For a single concept, create a Basic card (definition) plus one Cloze card (key fact).
-   Keep answers atomic (< 5 words unless it's a context/logic card).
-
-4. **Preview** — show the card(s) using the ASCII format from `references/shared_preview.md`.
-   Strip all HTML. Wait for the user to confirm, edit, or reject.
-
 5. **Write JSON** — write to `/tmp/anki_cards.json` (or a path the user specifies).
-
    Use the JSON format from `references/card_guidelines.md`.
 
 6. **Pre-import check & import** — follow `references/shared_import.md`.
