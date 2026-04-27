@@ -1,6 +1,11 @@
 # Claude Skill: Anki Card Creator
 
-A Claude Skill for creating high-quality Anki flashcards from study materials and importing them via the [AnkiConnect](https://ankiweb.net/shared/info/2055492159) REST API.
+A (Claude) Skill for creating high-quality Anki flashcards from study materials or any provided concept and importing them via the [AnkiConnect](https://ankiweb.net/shared/info/2055492159) REST API.
+
+> [!NOTE]
+> This skill covers specific use cases I needed — use it as-is or as inspiration for your own learning skill.
+> It is built on the [Agent Skills](https://agentskills.io/home) standard and can be used in any compatible environment, though the documentation here focuses on Claude Code.
+> Read more about Agent Skills [here](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) and [here](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills). 
 
 ## Installation
 
