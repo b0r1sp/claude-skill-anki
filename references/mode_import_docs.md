@@ -1,32 +1,51 @@
 # Mode: Import from Document(s)
 
-Use this mode when the user provides a study file (PDF, PPTX, etc.) and wants
-a full batch of cards created and imported into Anki.
+Use this mode when the user provides one or more study files (PDF, PPTX, etc.)
+and wants a full batch of cards created and imported into Anki.
 
 ## Workflow
 
 1. **Read the card guidelines** — load `references/card_guidelines.md` before
    creating any cards.
 
-2. **Read the source material** — read the attached PDF, PPTX, or other document(s).
+2. **Read the source material** — read all attached PDFs, PPTXs, or other documents.
+   If multiple files are provided, read them all before creating any cards.
 
-3. **Identify core concepts** — cluster content by concept, not by slide or paragraph.
-   Consult exam weightings if provided to prioritize content.
+3. **Exam or certification check** — ask the user:
+   ```
+   Is this deck for an exam or certification? [y] yes · [n] no
+   ```
+   If **yes**, ask for the assessment criteria:
+   ```
+   Please provide the assessment criteria or skill weightings.
+   You can paste text, attach a file, or share a screenshot — I'll read it.
+   ```
+   - Accept text, PDF, or screenshot (OCR the screenshot to extract the criteria)
+   - Parse each topic/skill and its weight (percentage, points, or priority level)
+   - Keep the criteria in mind for every step that follows
 
-4. **Create cards** — follow all rules in `references/card_guidelines.md`:
-   - Nucleus principle: ≥ 3 cards per core concept (definition, rule, application)
-   - Minimum information: one atomic fact per card, answers < 5 words
-   - Mnemonics for ordered lists
-   - Self-contained, with source reference on every card
+4. **Identify core concepts** — cluster content by concept, not by slide or paragraph.
+   If assessment criteria are available, apply them here:
+   - **High-weight topics** (e.g. ≥ 20%) → always form a nucleus; cluster deeply
+   - **Medium-weight topics** (e.g. 10–19%) → include all key concepts
+   - **Low-weight topics** (e.g. < 10%) → cover briefly; one cluster at most
+   - **Not in criteria** → skip unless foundational for understanding a listed topic
 
-5. **Preview cards** — show cards using the ASCII format from
-   `references/shared_preview.md`. Pages of 5. Wait for `n` between pages.
-   After the last page show:
+5. **Create cards** — follow all rules in `references/card_guidelines.md`.
+   Scale the number of cards per concept to its weight in the assessment criteria:
+   - **High-weight** → full nucleus (≥ 5 cards: definition, rule, application,
+     context/logic, cloze variants, mnemonic if list)
+   - **Medium-weight** → standard nucleus (3–4 cards)
+   - **Low-weight** → minimal (1–2 cards, definition only)
+   - Always: minimum information, self-contained, source reference on every card
+
+6. **Preview cards** — show all cards using the ASCII format from
+   `references/shared_preview.md`. After the last card show:
    ```
    ── Start import? [y] yes · [n] no ──
    ```
 
-6. **Select deck** — propose a deck name based on the source file and content,
+7. **Select deck** — propose a deck name based on the source file and content,
    then present the following options:
    ```
    [1] Create new deck       — enter a name
@@ -40,7 +59,7 @@ a full batch of cards created and imported into Anki.
 
    Update the deck in the JSON with the confirmed name before continuing.
 
-7. **Write JSON** — write to `/tmp/anki_cards.json` (or a path the user specifies).
+8. **Write JSON** — write to `/tmp/anki_cards.json` (or a path the user specifies).
    Use the JSON format from `references/card_guidelines.md`.
 
-8. **Pre-import check & import** — follow `references/shared_import.md`.
+9. **Pre-import check & import** — follow `references/shared_import.md`.

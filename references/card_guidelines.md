@@ -4,13 +4,17 @@
 
 1. **Cluster by concept** — Never create one card per sentence, slide, or fact. Group content by core concepts and build cards around those clusters.
 
-2. **Exam-relevance only** — Only create cards essential for achieving ≥95% on the exam. Consult the Assessment Skills and exam weightings to prioritize content.
+2. **Exam-relevance and weighting** — Only create cards essential for the exam or certification. When assessment criteria are provided, scale both the depth of clustering and the number of cards to the topic weight:
+   - **High-weight** (≥ 20%) → full nucleus, ≥ 5 cards per concept
+   - **Medium-weight** (10–19%) → standard nucleus, 3–4 cards
+   - **Low-weight** (< 10%) → minimal, 1–2 cards
+   - **Not listed** → skip unless foundational for a listed topic
 
 3. **Nucleus principle** — Each core concept must form a nucleus of at least 3 cards using different semantic angles:
    - A Basic card for the **definition**
    - A Cloze card for the **rule or key fact**
    - A Basic card for **practical application**
-   This creates a hermetic memory structure where the concept is anchored from multiple directions.
+   This creates a hermetic memory structure where the concept is anchored from multiple directions. Scale up for high-weight topics (see rule 2).
 
 4. **Learn before memorizing** — Create a Context/Logic card for each major concept to establish the "big picture" before drilling individual facts. This card can have a longer answer with context and examples.
 

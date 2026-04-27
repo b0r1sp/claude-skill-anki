@@ -17,18 +17,10 @@ Strip all HTML tags and color spans — show plain text only.
 └─────────────────────────────────────────────────────────┘
 ```
 
-## Paging
-
-- Show max **5 cards per page**
-- After each page (except the last):
-  ```
-  ── Page 1/3 ── [n] for next ──
-  ```
-  Wait for the user to type `n` (or any reply) before showing the next page.
-- After the last page:
-  ```
-  ── Start import? [y] yes · [n] no ──
-  ```
+After all cards are shown:
+```
+── Start import? [y] yes · [n] no ──
+```
 
 ## HTML stripping rules
 

@@ -43,14 +43,15 @@ The skill works the same way like in Claude Code and will help you create cards.
 
 ## What it does
 
-1. Reads study materials (PDF, PPTX, etc.)
-2. Clusters content by core concepts
-3. Creates cards following evidence-based spaced repetition principles
-4. Exports cards as JSON
-5. Runs a pre-import check — shows duplicate and review stats before touching anything
-6. Imports into Anki via AnkiConnect — with interactive duplicate handling (replace, update, or skip)
-7. Queries and lists existing notes via CLI
-8. Proactively suggests cards during conversation when a concept worth remembering comes up
+1. Reads one or more study materials (PDF, PPTX, etc.)
+2. Asks if the deck is for an exam or certification — if yes, accepts assessment criteria (text, file, or screenshot)
+3. Clusters content by concept, weighted by assessment criteria — more cards for high-weight topics, fewer for low-weight ones
+4. Creates cards following evidence-based spaced repetition principles, scaling depth to topic importance
+5. Exports cards as JSON
+6. Runs a pre-import check — shows duplicate and review stats before touching anything
+7. Imports into Anki via AnkiConnect — with interactive duplicate handling (replace, update, or skip)
+8. Queries and lists existing notes via CLI
+9. Proactively suggests cards during conversation when a concept worth remembering comes up
 
 ## Card creation principles
 
@@ -62,13 +63,14 @@ Full guidelines: [`references/card_guidelines.md`](references/card_guidelines.md
 
 1. **Make sure Anki is open** with the AnkiConnect add-on installed.
 2. **Start Claude Code** by running `claude` in your Terminal.
-3. **Invoke the skill** — type `/anki` and attach your study file, or just start explaining a topic. Claude will suggest cards as you learn.
-4. **Review the proposed cards** — Claude shows each card in an ASCII preview. Confirm, adjust, or reject before anything is written.
-5. **Select a deck** — Claude suggests a deck name based on the content:
+3. **Invoke the skill** — type `/anki` and attach one or more study files, or just start explaining a topic. Claude will suggest cards as you learn.
+4. **Exam or certification?** — Claude asks whether the deck is for an exam. If yes, provide the assessment criteria (paste text, attach a file, or share a screenshot). Claude OCRs screenshots, parses the weightings, and uses them throughout: high-weight topics get deeper clustering and more cards, low-weight topics get minimal coverage.
+5. **Review the proposed cards** — Claude shows each card in an ASCII preview. Confirm, adjust, or reject before anything is written.
+6. **Select a deck** — Claude suggests a deck name based on the content:
    - `[1]` Create a new deck — enter a name
    - `[2]` Add to the suggested existing deck
    - `[3]` Select from a list of all decks in Anki
-6. **Pre-import check** — Claude shows a summary before touching anything:
+7. **Pre-import check** — Claude shows a summary before touching anything:
    ```
    Pre-import check
    Deck: My Subject::Chapter 01  (247 cards)
@@ -81,8 +83,8 @@ Full guidelines: [`references/card_guidelines.md`](references/card_guidelines.md
           └─ Never reviewed:      1
    ```
    Duplicate details (reviews, interval, ease, lapses) are shown for each match.
-7. **Confirm** — Claude asks two separate questions: proceed with import, and (if learned duplicates exist) whether to reset their learning stats.
-8. **Claude imports** — writes `/tmp/anki_cards.json` and runs the import script. Results appear directly in the conversation.
+8. **Confirm** — Claude asks two separate questions: proceed with import, and (if learned duplicates exist) whether to reset their learning stats.
+9. **Claude imports** — writes `/tmp/anki_cards.json` and runs the import script. Results appear directly in the conversation.
 
 ---
 
@@ -182,45 +184,55 @@ Both include clean styling with dark mode support.
 ## Workflow
 
 ```
-1. Read card guidelines
-2. Read source material
-3. Cluster by concept, identify core concepts
-4. Create cards (nucleus principle, mnemonics, references)
+1.  Read card guidelines
+2.  Read source material(s)
+3.  Exam / certification check
+    Is this deck for an exam or certification? [y] yes · [n] no
+    → yes: provide assessment criteria (text, file, or screenshot)
+           Claude OCRs screenshots and parses topic weights
 
-5. Preview cards — ASCII format, 5 per page
-   ── Page 1/3 ── [n] for next ──
-   ── Start import? [y] yes · [n] no ──
+4.  Cluster by concept, weighted by assessment criteria
+    High-weight (≥20%): deep clustering, ≥5 cards per concept
+    Medium-weight (10–19%): standard nucleus, 3–4 cards
+    Low-weight (<10%): minimal, 1–2 cards
+    Not listed: skip unless foundational
 
-6. Select deck
-   [1] Create new deck       — enter a name
-   [2] Add to existing deck  — Suggested: My Subject::Chapter 01
-   [3] Select existing deck  — show list
+5.  Create cards (nucleus principle, mnemonics, references)
+    Number of cards per concept scales to its weight
 
-7. Write JSON to /tmp/anki_cards.json
+6.  Preview cards — ASCII format
+    ── Start import? [y] yes · [n] no ──
 
-8. Pre-import check
-   ──────────────────────────────────────────────
-   Pre-import check
-   Deck: My Subject::Chapter 01  (247 cards)
-   ──────────────────────────────────────────────
-   Deck total:                  247
-   To import:                    10
-     ├─ New cards:                7
-     └─ Duplicates:               3
-          ├─ Learned:             2
-          └─ Never reviewed:      1
-   ──────────────────────────────────────────────
-   Duplicate details:
-     [2] What is Atomicity?
-         reviews=5  interval=10d  ease=2.5  lapses=1
-     [8] What is Durability?
-         (never reviewed)
-   ──────────────────────────────────────────────
+7.  Select deck
+    [1] Create new deck       — enter a name
+    [2] Add to existing deck  — Suggested: My Subject::Chapter 01
+    [3] Select existing deck  — show list
 
-9.  Proceed with import? [y] yes · [n] no
-10. Reset learning stats for duplicates? [y] yes · [n] no
+8.  Write JSON to /tmp/anki_cards.json
+
+9.  Pre-import check
+    ──────────────────────────────────────────────
+    Pre-import check
+    Deck: My Subject::Chapter 01  (247 cards)
+    ──────────────────────────────────────────────
+    Deck total:                  247
+    To import:                    10
+      ├─ New cards:                7
+      └─ Duplicates:               3
+           ├─ Learned:             2
+           └─ Never reviewed:      1
+    ──────────────────────────────────────────────
+    Duplicate details:
+      [2] What is Atomicity?
+          reviews=5  interval=10d  ease=2.5  lapses=1
+      [8] What is Durability?
+          (never reviewed)
+    ──────────────────────────────────────────────
+
+10. Proceed with import? [y] yes · [n] no
+11. Reset learning stats for duplicates? [y] yes · [n] no
     (only shown if learned duplicates exist)
-11. Import
+12. Import
 ```
 
 ## License
