@@ -241,6 +241,8 @@ def check_cards(anki: AnkiConnect, data: dict) -> dict:
 
     Returns a report dict:
     {
+        "deck": str,
+        "deck_total": int,         # current note count in the target deck
         "total": int,
         "new": int,
         "duplicates": [
@@ -261,6 +263,13 @@ def check_cards(anki: AnkiConnect, data: dict) -> dict:
     deck = data["deck"]
     cards = data["cards"]
     duplicates = []
+
+    # Fetch current deck size
+    try:
+        deck_note_ids = anki.find_notes(f'deck:"{deck}"')
+        deck_total = len(deck_note_ids)
+    except AnkiConnectError:
+        deck_total = 0
 
     for i, card in enumerate(cards):
         existing = find_duplicate_notes(anki, deck, card)
@@ -297,6 +306,8 @@ def check_cards(anki: AnkiConnect, data: dict) -> dict:
         })
 
     return {
+        "deck": deck,
+        "deck_total": deck_total,
         "total": len(cards),
         "new": len(cards) - len(duplicates),
         "duplicates": duplicates,
@@ -308,29 +319,36 @@ def print_check_report(report: dict) -> None:
     dupes = report["duplicates"]
     learned = [d for d in dupes if d["learned"]]
     unlearned = [d for d in dupes if not d["learned"]]
+    W = 58
 
-    print("─" * 50)
-    print("Pre-import analysis")
-    print("─" * 50)
-    print(f"  Total cards:        {report['total']}")
-    print(f"  New (no duplicate): {report['new']}")
-    print(f"  Duplicates:         {len(dupes)}")
+    print("─" * W)
+    print("Pre-import check")
+    print(f"Deck: {report['deck']}  ({report['deck_total']} cards)")
+    print("─" * W)
+    print(f"  Deck total:              {report['deck_total']:>6}")
+    print(f"  To import:               {report['total']:>6}")
+    print(f"  ├─ New cards:            {report['new']:>6}")
+    print(f"  └─ Duplicates:           {len(dupes):>6}")
 
-    if learned:
-        print(f"    ├─ Learned:       {len(learned)}")
-        for d in learned:
+    if dupes:
+        learned_marker  = "├─" if unlearned else "└─"
+        print(f"       {learned_marker} Learned:         {len(learned):>6}")
+        if unlearned:
+            print(f"       └─ Never reviewed:  {len(unlearned):>6}")
+
+    print("─" * W)
+
+    if dupes:
+        print("Duplicate details:")
+        for d in dupes:
             front = _strip_html(d["card"].get("front", d["card"].get("text", "")))[:50]
-            print(f"    │   [{d['index']}] {front}")
-            print(f"    │       reviews={d['reviews']}  interval={d['interval']}d"
-                  f"  ease={d['ease']}  lapses={d['lapses']}")
-
-    if unlearned:
-        print(f"    └─ Never reviewed: {len(unlearned)}")
-        for d in unlearned:
-            front = _strip_html(d["card"].get("front", d["card"].get("text", "")))[:50]
-            print(f"        [{d['index']}] {front}")
-
-    print("─" * 50)
+            print(f"  [{d['index']}] {front}")
+            if d["learned"]:
+                print(f"      reviews={d['reviews']}  interval={d['interval']}d"
+                      f"  ease={d['ease']}  lapses={d['lapses']}")
+            else:
+                print(f"      (never reviewed)")
+        print("─" * W)
 
 
 def import_cards(

@@ -26,7 +26,21 @@ a full batch of cards created and imported into Anki.
    ── Start import? [y] yes · [n] no ──
    ```
 
-6. **Write JSON** — if the user confirms, write to `/tmp/anki_cards.json`
-   (or a path the user specifies). Use the JSON format from `references/card_guidelines.md`.
+6. **Select deck** — propose a deck name based on the source file and content,
+   then present the following options:
+   ```
+   [1] Create new deck       — enter a name
+   [2] Add to existing deck  — Suggested: My Subject::Chapter 01
+   [3] Select existing deck  — show list
+   ```
+   - **[1]** → prompt `Deck name: _`, user types a name
+   - **[2]** → use the suggested name directly, proceed
+   - **[3]** → query AnkiConnect for all deck names, show numbered list,
+               user enters a number to select
 
-7. **Pre-import check & import** — follow `references/shared_import.md`.
+   Update the deck in the JSON with the confirmed name before continuing.
+
+7. **Write JSON** — write to `/tmp/anki_cards.json` (or a path the user specifies).
+   Use the JSON format from `references/card_guidelines.md`.
+
+8. **Pre-import check & import** — follow `references/shared_import.md`.

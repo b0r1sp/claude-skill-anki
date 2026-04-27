@@ -8,8 +8,16 @@ either from the current conversation or by providing content directly.
 1. **Understand the concept** — ask the user what the concept is (or derive it from
    the current conversation context if it's clear).
 
-2. **Ask for the deck** — suggest a sensible deck name based on the topic. The user
-   can confirm or override.
+2. **Select deck** — propose a deck name based on the topic, then present:
+   ```
+   [1] Create new deck       — enter a name
+   [2] Add to existing deck  — Suggested: My Subject::Chapter 01
+   [3] Select existing deck  — show list
+   ```
+   - **[1]** → prompt `Deck name: _`, user types a name
+   - **[2]** → use the suggested name directly, proceed
+   - **[3]** → query AnkiConnect for all deck names, show numbered list,
+               user enters a number to select
 
 3. **Draft the card** — follow the card creation rules in `references/card_guidelines.md`.
    For a single concept, create a Basic card (definition) plus one Cloze card (key fact).

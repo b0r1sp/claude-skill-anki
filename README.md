@@ -64,8 +64,25 @@ Full guidelines: [`references/card_guidelines.md`](references/card_guidelines.md
 2. **Start Claude Code** by running `claude` in your Terminal.
 3. **Invoke the skill** — type `/anki` and attach your study file, or just start explaining a topic. Claude will suggest cards as you learn.
 4. **Review the proposed cards** — Claude shows each card in an ASCII preview. Confirm, adjust, or reject before anything is written.
-5. **Pre-import check** — Claude runs `--check` automatically, shows duplicate and review stats, and asks for confirmation.
-6. **Claude imports** — writes `/tmp/anki_cards.json` and runs the import script. Results appear directly in the conversation.
+5. **Select a deck** — Claude suggests a deck name based on the content:
+   - `[1]` Create a new deck — enter a name
+   - `[2]` Add to the suggested existing deck
+   - `[3]` Select from a list of all decks in Anki
+6. **Pre-import check** — Claude shows a summary before touching anything:
+   ```
+   Pre-import check
+   Deck: My Subject::Chapter 01  (247 cards)
+   ─────────────────────────────────────────
+   Deck total:                  247
+   To import:                    10
+     ├─ New cards:                7
+     └─ Duplicates:               3
+          ├─ Learned:             2
+          └─ Never reviewed:      1
+   ```
+   Duplicate details (reviews, interval, ease, lapses) are shown for each match.
+7. **Confirm** — Claude asks two separate questions: proceed with import, and (if learned duplicates exist) whether to reset their learning stats.
+8. **Claude imports** — writes `/tmp/anki_cards.json` and runs the import script. Results appear directly in the conversation.
 
 ---
 
@@ -159,6 +176,52 @@ The import script creates two note types in Anki if they don't exist:
 - **DL-Cloze** — Fields: Text, Ref
 
 Both include clean styling with dark mode support.
+
+---
+
+## Workflow
+
+```
+1. Read card guidelines
+2. Read source material
+3. Cluster by concept, identify core concepts
+4. Create cards (nucleus principle, mnemonics, references)
+
+5. Preview cards — ASCII format, 5 per page
+   ── Page 1/3 ── [n] for next ──
+   ── Start import? [y] yes · [n] no ──
+
+6. Select deck
+   [1] Create new deck       — enter a name
+   [2] Add to existing deck  — Suggested: My Subject::Chapter 01
+   [3] Select existing deck  — show list
+
+7. Write JSON to /tmp/anki_cards.json
+
+8. Pre-import check
+   ──────────────────────────────────────────────
+   Pre-import check
+   Deck: My Subject::Chapter 01  (247 cards)
+   ──────────────────────────────────────────────
+   Deck total:                  247
+   To import:                    10
+     ├─ New cards:                7
+     └─ Duplicates:               3
+          ├─ Learned:             2
+          └─ Never reviewed:      1
+   ──────────────────────────────────────────────
+   Duplicate details:
+     [2] What is Atomicity?
+         reviews=5  interval=10d  ease=2.5  lapses=1
+     [8] What is Durability?
+         (never reviewed)
+   ──────────────────────────────────────────────
+
+9.  Proceed with import? [y] yes · [n] no
+10. Reset learning stats for duplicates? [y] yes · [n] no
+    (only shown if learned duplicates exist)
+11. Import
+```
 
 ## License
 

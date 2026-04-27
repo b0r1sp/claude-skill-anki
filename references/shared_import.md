@@ -8,13 +8,11 @@ Run the check to show duplicate and review stats before touching anything:
 python /path/to/scripts/import_cards.py /tmp/anki_cards.json --check
 ```
 
-Present the report to the user:
-- How many new cards
-- How many duplicates — with review count, interval, ease, and lapses for each
+Present the report to the user, then ask the following as **separate steps**:
 
-Then ask:
-- *"Proceed with import?"*
-- *"Reset learning stats for duplicates?"* (only if learned duplicates exist)
+1. *"Proceed with import?"* — wait for answer before continuing
+2. *"Reset learning stats for duplicates?"* — ask this as a separate follow-up
+   **only if** learned duplicates exist; skip this step otherwise
 
 ## 2. Import
 
