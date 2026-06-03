@@ -3,6 +3,12 @@
 Use this mode when the user provides one or more study files (PDF, PPTX, etc.)
 and wants a full batch of cards created and imported into Anki.
 
+## Rules
+
+- Complete every step in order. Do not skip or merge steps.
+- Wait for explicit user confirmation at every `[y/n]` prompt before continuing.
+- Never import without first running the pre-import check and showing the full stats report.
+
 ## Workflow
 
 1. **Read the card guidelines** — load `references/card_guidelines.md` before
@@ -42,7 +48,7 @@ and wants a full batch of cards created and imported into Anki.
 6. **Preview cards** — show all cards using the ASCII format from
    `references/shared_preview.md`. After the last card show:
    ```
-   ── Start import? [y] yes · [n] no ──
+   ── Continue to deck selection? [y] yes · [n] no ──
    ```
 
 7. **Select deck** — propose a deck name based on the source file and content,

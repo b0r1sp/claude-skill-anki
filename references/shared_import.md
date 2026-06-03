@@ -1,17 +1,34 @@
 # Shared: Pre-Import Check & Import
 
-## 1. Pre-Import Check (always run before importing)
+## 0. After deck selection
 
-Run the check to show duplicate and review stats before touching anything:
+Once the user has confirmed a deck, show:
+
+```
+Deck confirmed: My Subject::Chapter 01
+Writing cards to /tmp/anki_cards.json…
+Running pre-import check — this may take a moment.
+```
+
+Then immediately write the JSON and run the check.
+
+## 1. Pre-Import Check (mandatory — never skip)
+
+**Always** run the check before importing. Never proceed to import without
+showing the stats report first.
 
 ```bash
 python /path/to/scripts/import_cards.py /tmp/anki_cards.json --check
 ```
 
-Present the report to the user, then ask the following as **separate steps**:
+**Always** present the full report to the user — deck total, cards to import,
+new vs. duplicate breakdown, and duplicate details with review stats.
+Do not summarise or omit any section of the report.
 
-1. *"Proceed with import?"* — wait for answer before continuing
-2. *"Reset learning stats for duplicates?"* — ask this as a separate follow-up
+Then ask the following as **separate sequential steps** — do not combine them:
+
+1. *"Proceed with import?"* — **wait** for explicit answer before continuing
+2. *"Reset learning stats for duplicates?"* — ask as a separate follow-up
    **only if** learned duplicates exist; skip this step otherwise
 
 ## 2. Import

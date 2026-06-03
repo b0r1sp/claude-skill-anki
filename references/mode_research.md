@@ -4,6 +4,12 @@ Use this mode when the user wants to learn a topic or concept from scratch.
 Claude researches the topic first, builds a structured learning plan, and
 creates cards based on the confirmed plan.
 
+## Rules
+
+- Complete every step in order. Do not skip or merge steps.
+- Wait for explicit user confirmation at every `[y/n]` prompt before continuing.
+- Never import without first running the pre-import check and showing the full stats report.
+
 ## Workflow
 
 1. **Understand the topic** — ask the user:
@@ -47,7 +53,7 @@ creates cards based on the confirmed plan.
 5. **Preview** — show all cards using the ASCII format from
    `references/shared_preview.md`. After the last card show:
    ```
-   ── Start import? [y] yes · [n] no ──
+   ── Continue to deck selection? [y] yes · [n] no ──
    ```
 
 6. **Select deck** — propose a deck name based on the topic, then present:

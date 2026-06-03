@@ -22,6 +22,10 @@ What would you like to do?
 [3] Research & create cards  — give me a topic, I'll research it and build a learning plan first
 ```
 
+**Strict step adherence:** every step in the chosen mode file must be completed
+in order. Do not skip, combine, or anticipate steps. Wait for explicit user
+confirmation at every `[y/n]` prompt before proceeding to the next step.
+
 Then load and follow the instructions for the chosen mode:
 
 | Choice | Instructions |

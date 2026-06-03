@@ -19,7 +19,7 @@ Strip all HTML tags and color spans — show plain text only.
 
 After all cards are shown:
 ```
-── Start import? [y] yes · [n] no ──
+── Continue to deck selection? [y] yes · [n] no ──
 ```
 
 ## HTML stripping rules

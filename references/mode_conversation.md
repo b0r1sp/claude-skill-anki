@@ -3,6 +3,12 @@
 Use this mode when the user wants to create cards for a concept that came up
 in the current conversation.
 
+## Rules
+
+- Complete every step in order. Do not skip or merge steps.
+- Wait for explicit user confirmation at every `[y/n]` prompt before continuing.
+- Never import without first running the pre-import check and showing the full stats report.
+
 ## Workflow
 
 1. **Identify the concept** — derive it from the conversation context, or ask
@@ -15,7 +21,7 @@ in the current conversation.
 3. **Preview** — show the card(s) using the ASCII format from `references/shared_preview.md`.
    Strip all HTML. After the last card show:
    ```
-   ── Start import? [y] yes · [n] no ──
+   ── Continue to deck selection? [y] yes · [n] no ──
    ```
 
 4. **Select deck** — propose a deck name based on the topic, then present:
