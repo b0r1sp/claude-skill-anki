@@ -69,7 +69,7 @@ check, and import) are identical in all modes. The steps before that differ.
 
 ```
 6.  Preview cards — ASCII format
-    ── Start import? [y] yes · [n] no ──
+    ── Continue to deck selection? [y] yes · [n] no ──
 
 7.  Select deck
     [1] Create new deck       — enter a name
